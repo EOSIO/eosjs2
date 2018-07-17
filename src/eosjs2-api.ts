@@ -2,7 +2,7 @@
 
 'use strict';
 
-import { Abi, GetInfoResult, JsonRpc } from './eosjs2-jsonrpc';
+import { Abi, GetInfoResult, JsonRpc, PushTransactionArgs } from './eosjs2-jsonrpc';
 import * as ser from './eosjs2-serialize';
 const transactionAbi = require('../src/transaction.abi.json');
 
@@ -93,7 +93,7 @@ export class Api {
         }));
     }
 
-    async pushTransaction({ blocksBehind, expireSeconds, actions, ...transaction }: any) {
+    async fillTaposFields({ blocksBehind, expireSeconds, actions, ...transaction }: any) {
         let info: GetInfoResult;
         if (!this.chainId) {
             info = await this.rpc.get_info();
@@ -105,14 +105,21 @@ export class Api {
             let refBlock = await this.rpc.get_block(info.head_block_num - blocksBehind);
             transaction = { ...ser.transactionHeader(refBlock, expireSeconds), ...transaction };
         }
-        transaction = { ...transaction, actions: await this.serializeActions(actions) };
+        return { ...transaction, actions: await this.serializeActions(actions) };
+    }
+
+    async signTransaction(transaction: any) {
         let serializedTransaction = this.serializeTransaction(transaction);
         let availableKeys = await this.signatureProvider.getAvailableKeys();
         let requiredKeys = await this.authorityProvider.getRequiredKeys({ transaction, availableKeys });
-        let signatures = await this.signatureProvider.sign({ chainId: this.chainId, requiredKeys, serializedTransaction: serializedTransaction });
-        return await this.rpc.push_transaction({
+        let signatures = await this.signatureProvider.sign({ chainId: this.chainId, requiredKeys, serializedTransaction });
+        return {
             signatures,
             serializedTransaction,
-        });
+        };
+    }
+
+    async signAndPushTransaction(transaction: any) {
+        return await this.rpc.push_transaction(await this.signTransaction(await this.fillTaposFields(transaction)));
     }
 } // Api
