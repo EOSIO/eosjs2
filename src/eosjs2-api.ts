@@ -65,6 +65,9 @@ export interface CachedAbi {
 
   /** abi in structured form */
   abi: Abi;
+
+  /** code hash */
+  codeHash: string;
 }
 
 export class Api {
@@ -131,14 +134,15 @@ export class Api {
     let cachedAbi: CachedAbi;
     try {
       // todo: use get_raw_abi when it becomes available
-      const rawAbi = base64ToBinary((await this.rpc.get_raw_code_and_abi(accountName)).abi);
+      const rawResult = await this.rpc.get_raw_abi(accountName);
+      const rawAbi = base64ToBinary(rawResult.abi);
       const buffer = new ser.SerialBuffer({
         textEncoder: this.textEncoder,
         textDecoder: this.textDecoder,
         array: rawAbi,
       });
       const abi = this.abiTypes.get("abi_def").deserialize(buffer);
-      cachedAbi = { rawAbi, abi };
+      cachedAbi = { rawAbi, abi, codeHash: rawResult.code_hash };
     } catch (e) {
       e.message = `fetching abi for ${accountName}: ${e.message}`;
       throw e;

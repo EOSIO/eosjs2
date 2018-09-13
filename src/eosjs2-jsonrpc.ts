@@ -73,6 +73,13 @@ export interface GetRawCodeAndAbiResult {
   abi: string;
 }
 
+/** Return value of `/v1/chain/get_raw_abi` */
+export interface GetRawAbiResult {
+  account_name: string;
+  code_hash: string;
+  abi: string;
+}
+
 /** Arguments for `push_transaction` */
 export interface PushTransactionArgs {
   signatures: string[];
@@ -193,6 +200,12 @@ export class JsonRpc implements AuthorityProvider {
   // tslint:disable-next-line:variable-name
   public async get_raw_code_and_abi(account_name: string): Promise<GetRawCodeAndAbiResult> {
     return await this.fetch("/v1/chain/get_raw_code_and_abi", { account_name });
+  }
+
+  /** Raw call to `/v1/chain/get_raw_abi` */
+  // tslint:disable-next-line:variable-name
+  public async get_raw_abi(account_name: string, abi_hash?: string): Promise<GetRawAbiResult> {
+    return await this.fetch("/v1/chain/get_raw_abi", { account_name, abi_hash });
   }
 
   /** Raw call to `/v1/chain/get_table_rows` */
