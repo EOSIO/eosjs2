@@ -1,3 +1,6 @@
+/**
+ * @module RPC-Error
+ */
 /** Holds detailed error information */
 export class RpcError extends Error {
     /** Detailed error information */

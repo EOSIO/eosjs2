@@ -10,7 +10,10 @@
     "lint-fix": "tslint -c tslint.json src/**/*.ts --fix",
     "build": "tsc -p ./tsconfig.json && cp src/ripemd.es5.js dist/ripemd.js",
     "build-web": "webpack",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "build-docs": "sh ./docs/build.sh",
+    "serve-docs": "sh ./docs/serve.sh",
+    "build-serve-docs": "sh ./docs/build-and-serve.sh"
   },
   "author": "block.one",
   "license": "MIT",
@@ -26,6 +29,11 @@
   },
   "devDependencies": {
     "@types/node": "^10.3.1",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-1": "^6.24.1",
+    "gitbook-cli": "2.3.2",
+    "gitbook-plugin-page-toc": "^1.1.0",
     "jest": "^23.5.0",
     "jest-fetch-mock": "^1.6.5",
     "json-loader": "^0.5.7",
@@ -33,6 +41,9 @@
     "ts-loader": "^4.3.1",
     "tslint": "^5.11.0",
     "tslint-eslint-rules": "^5.4.0",
+    "typedoc": "0.12.0",
+    "typedoc-plugin-external-module-name": "^1.1.3",
+    "typedoc-plugin-markdown": "1.1.13",
     "typescript": "^2.9.1",
     "webpack": "^4.11.0",
     "webpack-cli": "^3.0.2"

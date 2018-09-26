@@ -1,6 +1,6 @@
 *Important*: eosjs2 is under active development and should be considered beta. Improvements and enhancements may break or remove existing functionality. Be sure to lock your dependencies.
 
-## eosjs2
+# eosjs2
 
 Library for talking to the eos api. transact() is used to sign and push transactions onto the blockchain with an optional configuration object parameter.  This parameter can override the default value of broadcast: true, and can be used to fill TAPOS fields given blocksBehind and expireSeconds.  Given no configuration options, transactions are expected to be unpacked with TAPOS fields (expiration, ref_block_num, ref_block_prefix) and will automatically be broadcast onto the chain.
 
@@ -15,7 +15,7 @@ Open `test.html` in your browser of choice
 
 `npm run build-web` or `yarn build-web`
 
-#### IE11 and Edge Support
+### IE11 and Edge Support
 If you need to support IE11 or Edge you will also need to install a text-encoding polyfill as eosjs2 Signing is dependent on the TextEncoder which IE11 and Edge do not provide.  Pass the TextEncoder and TextDecoder to the API constructor as demonstrated in the [ES 2015 example](#node-es-2015).  Refer to the documentation here https://github.com/inexorabletash/text-encoding to determine the best way to include it in your project.
 
 Reuse the `api` object for all transactions; it caches ABIs to reduce network usage. Only call `new eosjs2.Api(...)` once.

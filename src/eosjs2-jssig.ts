@@ -1,5 +1,7 @@
+/**
+ * @module Signature
+ */
 // copyright defined in eosjs2/LICENSE.txt
-
 "use strict";
 
 import * as ecc from "eosjs-ecc";

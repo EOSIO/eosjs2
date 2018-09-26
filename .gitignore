@@ -3,3 +3,4 @@ dist-web/
 node_modules
 package-lock.json
 .DS_Store
+docs/build/
